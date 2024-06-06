@@ -1,0 +1,19 @@
+LIBRARY_DATABASE QUIRES 
+
+1) select b.book_id,b.title,b.pub_name,ba.author_name,bc.no_of_copies,br.programme_name from book b,book_authors ba,book_copies bc,library_programme br
+    -> where b.book_id = ba.book_id and b.book_id = bc.book_id and bc.programme_id = br.programme_id;
+//connect one table to other using primary_key 
+
+2) select card_no from book_lending
+    -> where date_out between '2017-03-01' and '2017-06-01'
+    -> group by card_no //after that the date and card no will display group them 
+    -> having count(*) >3;
+
+3) DELETE FROM BOOK
+WHERE BOOK_ID =  2;
+
+4) select pub_year,title from book;
+
+5)create view all_books as
+    -> select b.book_id,b.title,bc.no_of_copies,lp.programme_name from book b,book_copies bc,library_programme lp
+    -> where b.book_id = bc.book_id and bc.programme_id = lp.programme_id;
