@@ -1,0 +1,82 @@
+ORDER DATABASES
+1) select grade , count(customer_id) from customer
+    -> group by grade
+    -> having grade>(select avg(grade) from customer where city='bangalore');
+
+output : +-------+--------------------+  //remeber if count,avg is there need to make group by if group by there then followed having should be there
+| grade | count(customer_id) |
++-------+--------------------+
+|   400 |                  2 |
++-------+--------------------+
+1 row in set (0.00 sec)
+
+2) select salesman_id,name from salesman s  // remember if u are using to get result from same table no need to mention s.salesman_id,s.name 
+    -> where (select count(salesman_id) from customer c
+    -> where s.salesman_id = c.salesman_id)>1;
++-------------+--------+
+| salesman_id | name   |
++-------------+--------+
+|        2000 | ANKITA |
++-------------+--------+
+1 row in set (0.00 sec)
+
+3) select s.name as salesman,c.cust_name as customer,s.city from salesman s ,customer c where s.city = c.city
+    -> union
+    -> select s.name as salesman,c.cust_name as customer,'NO-IN-CITY' from salesman s ,customer c where s.city != c.city
+
++----------+----------+------------+
+| salesman | customer | city       |
++----------+----------+------------+
+| ANKITA   | ESHA     | BANGALORE  |
+| ANKITA   | DANISH   | BANGALORE  |
+| ANKITA   | CHETHAN  | NO-IN-CITY |
+| SHARMA   | ESHA     | NO-IN-CITY |
+| SHARMA   | DANISH   | NO-IN-CITY |
+| SHARMA   | CHETHAN  | NO-IN-CITY |
+| ANJALI   | ESHA     | NO-IN-CITY |
+| ANJALI   | DANISH   | NO-IN-CITY |
+| ANJALI   | CHETHAN  | NO-IN-CITY |
+| RAJ      | ESHA     | NO-IN-CITY |
+| RAJ      | DANISH   | NO-IN-CITY |
+| RAJ      | CHETHAN  | NO-IN-CITY |
++----------+----------+------------+
+12 rows in set (0.00 sec)
+
+4) create view sal as
+    -> select s.salesman_id ,s.name,o.order_date from salesman s,orders o
+    -> where s.salesman_id =  o.salesman_id and o.purchase_amount = (select max(purchase_amount) from orders m
+    -> where m.order_date = o.order_date);  // in comparing on that date need to write in same way if only order_date not be specified on which date so its as to compare itslef
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from sal;
++-------------+--------+------------+
+| salesman_id | name   | order_date |
++-------------+--------+------------+
+|        2000 | ANKITA | 2020-03-15 |
+|        3000 | SHARMA | 2020-07-09 |
++-------------+--------+------------+
+2 rows in set (0.00 sec)
+
+5)delete from salesman
+    -> where salesman_id = 1000;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from salesman;
++-------------+--------+-----------+------------+
+| SALESMAN_ID | NAME   | CITY      | COMMISSION |
++-------------+--------+-----------+------------+
+|        2000 | ANKITA | BANGALORE | 25%        |
+|        3000 | SHARMA | MYSORE    | 30%        |
+|        4000 | ANJALI | DELHI     | 15%        |
+|        5000 | RAJ    | HYDERABAD | 15%        |
++-------------+--------+-----------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from orders;
++----------+-----------------+------------+-------------+-------------+
+| ORDER_NO | PURCHASE_AMOUNT | ORDER_DATE | CUSTOMER_ID | SALESMAN_ID |
++----------+-----------------+------------+-------------+-------------+
+|      203 |         1000.00 | 2020-03-15 |           3 |        2000 |
+|      204 |         3500.00 | 2020-07-09 |           4 |        3000 |
++----------+-----------------+------------+-------------+-------------+
+2 rows in set (0.00 sec)
