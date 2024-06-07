@@ -1,0 +1,67 @@
+              COLLEGE DATABASE
+1)select s.*,ss.ssid,ss.sem,ss.sec from student s,semsec ss,class c
+    -> where s.usn = c.usn and c.ssid = ss.ssid and ss.sem = 4 and ss.sec = 'c';
+    ->    where s.usn = c.usn and c.ssid = ss.ssid and ss.sem = 4 and ss.sec='C';
++------------+--------+-----------+--------+--------+-------+------+------+
+| USN        | SNAME  | ADDRESS   | PHONE  | GENDER | ssid  | sem  | sec  |
++------------+--------+-----------+--------+--------+-------+------+------+
+| 1BI15CS091 | MALINI | MANGALURU | 235464 | F      | CSE4C |    4 | C    |
++------------+--------+-----------+--------+--------+-------+------+------+
+
+2) select ss.sem,ss.sec,s.gender,count(s.gender) from student s,semsec ss,class c
+    -> where s.usn = c.usn and c.ssid = ss.ssid
+    -> group by ss.sem ,ss.sec,s.gender
+    -> order by sem;
++------+------+--------+-----------------+
+| sem  | sec  | gender | count(s.gender) |
++------+------+--------+-----------------+
+|    3 | A    | M      |               1 |
+|    3 | B    | M      |               1 |
+|    3 | C    | F      |               1 |
+|    4 | A    | F      |               1 |
+|    4 | A    | M      |               1 |
+|    4 | B    | F      |               1 |
+|    4 | C    | F      |               1 |
+|    7 | A    | F      |               1 |
+|    7 | A    | M      |               2 |
+|    8 | B    | F      |               1 |
+|    8 | C    | M      |               1 |
++------+------+--------+-----------------+
+11 rows in set (0.00 sec)
+
+3) create view Te as
+    -> select subcode,test1 from iamarks
+    -> where usn = '1bi15cs101';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from te;
++---------+-------+
+| subcode | test1 |
++---------+-------+
+| 10CS82  |    12 |
+| 10CS83  |    19 |
+| 10CS84  |    20 |
+| 10CS85  |    15 |
++---------+-------+
+4 rows in set (0.00 sec)
+
+5)SELECT S.USN,S.SNAME,S.ADDRESS,S.PHONE,S.GENDER, IA.SUBCODE,
+    -> (CASE
+    -> WHEN IA.FINALIA BETWEEN 17 AND 20 THEN 'OUTSTANDING'
+    -> WHEN IA.FINALIA BETWEEN 12 AND 16 THEN 'AVERAGE'
+    -> ELSE 'WEAK'
+    -> END) AS CAT
+    -> FROM STUDENT S, SEMSEC SS, IAMARKS IA, SUBJECT SUB
+    -> WHERE S.USN = IA.USN AND
+    -> SS.SSID = IA.SSID AND
+    -> SUB.SUBCODE = IA.SUBCODE AND
+    -> SUB.SEM = 8;
++------------+---------+-----------+--------+--------+---------+-------------+
+| USN        | SNAME   | ADDRESS   | PHONE  | GENDER | SUBCODE | CAT         |
++------------+---------+-----------+--------+--------+---------+-------------+
+| 1BI15CS101 | CHETHAN | BENGALURU | 534234 | M      | 10CS82  | OUTSTANDING |
+| 1BI15CS101 | CHETHAN | BENGALURU | 534234 | M      | 10CS83  | OUTSTANDING |
+| 1BI15CS101 | CHETHAN | BENGALURU | 534234 | M      | 10CS84  | OUTSTANDING |
+| 1BI15CS101 | CHETHAN | BENGALURU | 534234 | M      | 10CS85  | AVERAGE     |
++------------+---------+-----------+--------+--------+---------+-------------+
+4 rows in set (0.00 sec)
