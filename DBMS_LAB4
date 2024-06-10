@@ -1,7 +1,7 @@
               COLLEGE DATABASE
 1)select s.*,ss.ssid,ss.sem,ss.sec from student s,semsec ss,class c
     -> where s.usn = c.usn and c.ssid = ss.ssid and ss.sem = 4 and ss.sec = 'c';
-    ->    where s.usn = c.usn and c.ssid = ss.ssid and ss.sem = 4 and ss.sec='C';
+
 +------------+--------+-----------+--------+--------+-------+------+------+
 | USN        | SNAME  | ADDRESS   | PHONE  | GENDER | ssid  | sem  | sec  |
 +------------+--------+-----------+--------+--------+-------+------+------+
